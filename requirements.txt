@@ -4,4 +4,6 @@ requests
 beautifulsoup4
 jieba
 plotly
+seaborn
+matplotlib
 wordcloud
