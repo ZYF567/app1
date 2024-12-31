@@ -95,23 +95,15 @@ def create_heatmap(data):
         print("没有可绘制的数据。")
         return
 
-    # 获取词语列表和对应的频率列表
-    words = data['词语'].tolist()
+    words = data.index.tolist()
     frequencies = data['频率'].tolist()
-
-    # 构建适合seaborn绘制热力图的二维数据结构，这里以词语为行，频率为列（虽然只有一列）
-    heatmap_data = []
-    for i in range(len(words)):
-        heatmap_data.append([frequencies[i]])
+    heatmap_data = [[freq] for freq in frequencies]
 
     fig, ax = plt.subplots(figsize=(8, len(words) / 2))
-    # 绘制热力图，设置annot=True显示数值，fmt=".0f"控制数值格式，cmap选择颜色映射，yticklabels设置y轴刻度标签为词语
     sns.heatmap(heatmap_data, annot=True, fmt=".0f", cmap="YlGnBu", yticklabels=words, cbar_kws={'label': '词频'})
     ax.set_title("热力图")
-    # 设置y轴标签为词语
     ax.set_ylabel("词语")
-    # 设置x轴标签（这里可以根据实际语义来定，比如可以写"词频情况"之类的表意标签）
-    ax.set_xlabel("词频")
+    ax.set_xlabel("类别")
     st.pyplot(fig)
 
 
