@@ -157,8 +157,8 @@ def create_horizontal_bar_chart(data):
 def main():
     st.title("文章词频分析")
 
-    # 文章URL输入框
-    url = st.text_input("请输入文章URL:")
+   # 文章 URL 输入框
+    url = st.text_input("请输入文章 URL:")
 
     if url:
         headers = {
@@ -173,17 +173,19 @@ def main():
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # 如果请求失败，抛出异常
 
-        # 解析HTML
+        # 解析 HTML
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # 查找 <article> 标签，其中 class="article" 和 id="mp-editor"
-        article = soup.find('article', class_='article', id='mp-editor')
+        # 查找所有 <a> 标签
+        a_tags = soup.find_all('a')
 
-        # 如果找到了文章内容，则返回其文本内容，否则返回错误提示
-        if article:
-            article_content = article.get_text(separator="\n", strip=True)  # 提取纯文本
+        # 提取 <a> 标签内的文本内容并拼接
+        if a_tags:
+            article_content = ""
+            for a_tag in a_tags:
+                article_content += a_tag.get_text(separator="\n", strip=True) + "\n"
         else:
-            st.error("无法找到文章内容，页面结构可能有所不同。")
+            st.error("无法找到 <a> 标签内容，页面结构可能有所不同。")
             return
 
         # 显示全文
