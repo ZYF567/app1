@@ -10,7 +10,6 @@ import plotly.graph_objects as go
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# 对文本进行分词并统计词频
 def process_text_for_frequency(text):
     # 使用 jieba 分词
     words = jieba.cut(text)
@@ -20,10 +19,7 @@ def process_text_for_frequency(text):
                       len(word) > 1 and word.strip() not in ['\n', ' ', '。', ',', '，', '！', '：', '；', '(', ')', '“',
                                                              '”']]
 
-    # 统计词频
     word_counts = Counter(filtered_words)
-
-    # 返回所有词频统计结果
     return word_counts
 
 
@@ -32,7 +28,7 @@ def create_wordcloud(words):
     from wordcloud import WordCloud
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(10, 5))
-    font_path = 'SimHei.ttf'  # 假设字体文件已经上传到应用根目录
+    font_path = 'SimHei.ttf'  
     if not os.path.isfile(font_path):
         st.error("字体文件SimHei.ttf不存在，请上传字体文件到应用根目录。")
         return
@@ -99,11 +95,8 @@ def create_heatmap(data):
         print("没有可绘制的数据。")
         return
 
-    # 获取词语列表作为y轴标签
     words = data.index.tolist()
-    # 获取频率数据
     frequencies = data['频率'].tolist()
-    # 构造用于seaborn绘制热力图的数据结构（这里简单构造一个二维数组示例，假设只有一个类别情况）
     heatmap_data = [[freq] for freq in frequencies]
 
     fig, ax = plt.subplots(figsize=(8, len(words) / 2))
