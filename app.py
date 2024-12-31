@@ -13,8 +13,7 @@ import matplotlib.pyplot as plt
 def process_text_for_frequency(text):
     # 使用 jieba 分词
     words = jieba.cut(text)
-
-    # 过滤掉无意义的单词（如：空格、数字、标点等）
+    
     filtered_words = [word for word in words if
                       len(word) > 1 and word.strip() not in ['\n', ' ', '。', ',', '，', '！', '：', '；', '(', ')', '“',
                                                              '”']]
