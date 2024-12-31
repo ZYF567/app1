@@ -7,6 +7,8 @@ from collections import Counter
 import os
 import plotly.express as px
 import plotly.graph_objects as go
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # 对文本进行分词并统计词频
 def process_text_for_frequency(text):
@@ -91,7 +93,7 @@ def create_line_chart(data):
     st.plotly_chart(fig)
 
 
-# 创建热力图
+# 使用seaborn创建热力图
 def create_heatmap(data):
     if data is None or data.empty:
         print("没有可绘制的数据。")
@@ -99,25 +101,18 @@ def create_heatmap(data):
 
     # 获取词语列表作为y轴标签
     words = data.index.tolist()
-    # 获取类别列表作为x轴标签（这里假设数据的列名是类别）
-    categories = data.columns.tolist()
+    # 获取频率数据
+    frequencies = data['频率'].tolist()
+    # 构造用于seaborn绘制热力图的数据结构（这里简单构造一个二维数组示例，假设只有一个类别情况）
+    heatmap_data = [[freq] for freq in frequencies]
 
-    fig = px.imshow(data,
-                    labels=dict(x="类别", y="词语", color="词频"),
-                    x=categories,
-                    y=words,
-                    title="热力图")
-    fig.update_layout(
-        font=dict(
-            family="SimHei",
-            size=12,
-            color="Black"
-        ),
-        xaxis_title="类别",
-        yaxis_title="词语",
-        coloraxis_colorbar_title="词频"
-    )
-    st.plotly_chart(fig)
+    fig, ax = plt.subplots(figsize=(8, len(words) / 2))
+    sns.heatmap(heatmap_data, annot=True, fmt=".0f", cmap="YlGnBu", yticklabels=words, cbar_kws={'label': '词频'})
+    ax.set_title("热力图")
+    ax.set_ylabel("词语")
+    ax.set_xlabel("类别")
+    st.pyplot(fig)
+
 
 # 创建散点图
 def create_scatter_plot(data):
